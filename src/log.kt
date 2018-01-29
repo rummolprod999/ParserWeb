@@ -3,7 +3,7 @@ import java.io.FileWriter
 import java.util.*
 import kotlin.text.*
 
-fun <T : Any> Logger(vararg parametrs: T) {
+fun <T : Any> logger(vararg parametrs: T) {
     val s = StringBuilder()
     s.append(Date())
     for (p in parametrs) {

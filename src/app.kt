@@ -7,16 +7,16 @@ fun main(args: Array<String>) {
 }
 
 fun parserZakupMos() {
-    Logger("Начало парсинга")
+    logger("Начало парсинга")
     val p = ParserZakupMos()
     try {
         p.parser()
     } catch (e: Exception) {
-        Logger("Error in ParserZakupMos function", e.stackTrace, e)
+        logger("Error in ParserZakupMos function", e.stackTrace, e)
         e.printStackTrace()
     }
 
-    Logger("Добавили тендеров $AddTender")
-    Logger("Конец парсинга")
+    logger("Добавили тендеров $AddTender")
+    logger("Конец парсинга")
 
 }

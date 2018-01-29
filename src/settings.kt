@@ -1,10 +1,6 @@
 import java.io.File
-import java.lang.reflect.Array.getLength
 import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.parsers.DocumentBuilder
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Node
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,6 +17,7 @@ var Port: Int = 0
 var logPath: String? = null
 val DateNow = Date()
 var AddTender: Int = 0
+var UrlConnect: String? = null
 
 fun GetSettings() = try {
     val filePathSetting = executePath + File.separator + "setting_tenders.xml"
@@ -28,27 +25,30 @@ fun GetSettings() = try {
     val document = documentBuilder.parse(filePathSetting)
     val root = document.documentElement
     val settings = root.childNodes
-    for (i in 0 until settings.length) {
-        val setng = settings.item(i)
-        if (setng.nodeType !== Node.TEXT_NODE) {
-            when (setng.nodeName) {
-                "database" -> Database = setng.childNodes.item(0).textContent
-                "tempdir_tenders_zakupkikomos" -> tempDirTenders = executePath + File.separator + setng.childNodes.item(0).textContent
-                "logdir_tenders_zakupkikomos" -> logDirTenders = executePath + File.separator + setng.childNodes.item(0).textContent
-                "prefix" -> try {
-                    Prefix = setng.childNodes.item(0).textContent
-                } catch (e: Exception) {
-                    Prefix = ""
-                }
-
-                "userdb" -> UserDb = setng.childNodes.item(0).textContent
-                "passdb" -> PassDb = setng.childNodes.item(0).textContent
-                "server" -> Server = setng.childNodes.item(0).textContent
-                "port" -> Port = Integer.valueOf(setng.childNodes.item(0).textContent)
+    (0 until settings.length)
+            .asSequence()
+            .map { settings.item(it) }
+            .filter {
+                @Suppress("DEPRECATED_IDENTITY_EQUALS")
+                it.nodeType !== Node.TEXT_NODE
             }
-        }
+            .forEach {
+                when (it.nodeName) {
+                    "database" -> Database = it.childNodes.item(0).textContent
+                    "tempdir_tenders_zakupkikomos" -> tempDirTenders = executePath + File.separator + it.childNodes.item(0).textContent
+                    "logdir_tenders_zakupkikomos" -> logDirTenders = executePath + File.separator + it.childNodes.item(0).textContent
+                    "prefix" -> Prefix = try {
+                        it.childNodes.item(0).textContent
+                    } catch (e: Exception) {
+                        ""
+                    }
 
-    }
+                    "userdb" -> UserDb = it.childNodes.item(0).textContent
+                    "passdb" -> PassDb = it.childNodes.item(0).textContent
+                    "server" -> Server = it.childNodes.item(0).textContent
+                    "port" -> Port = Integer.valueOf(it.childNodes.item(0).textContent)
+                }
+            }
 } catch (e: Exception) {
     e.printStackTrace()
     System.exit(1)
@@ -77,4 +77,5 @@ fun Init() {
     }
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     logPath = "$logDirTenders${File.separator}log_parsing_${dateFormat.format(DateNow)}.log"
+    UrlConnect = "jdbc:mysql://$Server:$Port/$Database?jdbcCompliantTruncation=false&useUnicode=true&characterEncoding=utf-8"
 }

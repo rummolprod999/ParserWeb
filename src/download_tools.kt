@@ -9,13 +9,13 @@ import java.util.concurrent.*
 fun downloadFromUrl(urls: String): String {
     var count = 0
     while (true) {
-        val i: Int = 50
+        val i = 50
         if (count > i) {
-            Logger(String.format("Не скачали строку за %d попыток", count), urls)
+            logger(String.format("Не скачали строку за %d попыток", count), urls)
             break
         }
         try {
-            var s = ""
+            var s: String
             val executor = Executors.newCachedThreadPool()
             val task = { downloadWait(urls) }
             val future = executor.submit(task)
@@ -29,6 +29,7 @@ fun downloadFromUrl(urls: String): String {
                 throw ex
             } finally {
                 future.cancel(true)
+                executor.shutdown()
             }
             return s
 
