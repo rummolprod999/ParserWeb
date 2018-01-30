@@ -1,7 +1,7 @@
-import java.sql.Connection
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.SQLException
+import java.sql.*
+import java.text.ParseException
+import java.util.*
+import java.util.Date
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -106,9 +106,9 @@ fun TenderKwords(idTender: Int, con: Connection) {
         r4.close()
         p4.close()
     }
-    val p5 = con.prepareStatement("SELECT DISTINCT cus.inn, cus.full_name FROM ${Prefix}customer AS cus LEFT JOIN ${Prefix}purchase_object AS po ON cus.id_customer = po.id_customer LEFT JOIN ${Prefix}lot AS l ON l.id_lot = po.id_lot WHERE l.id_tender = ?")
+    val p5: PreparedStatement = con.prepareStatement("SELECT DISTINCT cus.inn, cus.full_name FROM ${Prefix}customer AS cus LEFT JOIN ${Prefix}purchase_object AS po ON cus.id_customer = po.id_customer LEFT JOIN ${Prefix}lot AS l ON l.id_lot = po.id_lot WHERE l.id_tender = ?")
     p5.setInt(1, idOrg)
-    val r5 = p5.executeQuery()
+    val r5: ResultSet = p5.executeQuery()
     while (r5.next()) {
         var fullNameC: String?
         fullNameC = r5.getString(1)
@@ -127,9 +127,9 @@ fun TenderKwords(idTender: Int, con: Connection) {
     }
     r5.close()
     p5.close()
-    val pattern = Pattern.compile("\\s+")
+    val pattern: Pattern = Pattern.compile("\\s+")
     val matcher: Matcher = pattern.matcher(s.toString())
-    var ss = matcher.replaceAll(" ")
+    var ss: String = matcher.replaceAll(" ")
     ss = ss.trim { it <= ' ' }
     val p6 = con.prepareStatement("UPDATE ${Prefix}tender SET tender_kwords = ? WHERE id_tender = ?")
     p6.setString(1, ss)
@@ -137,4 +137,21 @@ fun TenderKwords(idTender: Int, con: Connection) {
     p6.executeUpdate()
     p6.close()
 
+}
+
+fun GetDate(dt: String): Date {
+    var d = Date(0L)
+    try {
+        d = formatter.parseObject(dt) as Date
+    } catch (ignored: ParseException) {
+
+    }
+
+    return d
+}
+fun DateAddHours(dt: Date, h: Int): Date{
+    val cal = Calendar.getInstance()
+    cal.time = dt
+    cal.add(Calendar.HOUR_OF_DAY, h)
+    return cal.time
 }

@@ -1,6 +1,7 @@
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 import org.w3c.dom.Node
+import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +19,7 @@ var logPath: String? = null
 val DateNow = Date()
 var AddTender: Int = 0
 var UrlConnect: String? = null
+var formatter: Format = SimpleDateFormat("dd.MM.yyyy kk:mm:ss")
 
 fun GetSettings() = try {
     val filePathSetting = executePath + File.separator + "setting_tenders.xml"
@@ -77,5 +79,5 @@ fun Init() {
     }
     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     logPath = "$logDirTenders${File.separator}log_parsing_${dateFormat.format(DateNow)}.log"
-    UrlConnect = "jdbc:mysql://$Server:$Port/$Database?jdbcCompliantTruncation=false&useUnicode=true&characterEncoding=utf-8"
+    UrlConnect = "jdbc:mysql://$Server:$Port/$Database?jdbcCompliantTruncation=false&useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow&connectTimeout=5000&socketTimeout=30000"
 }
