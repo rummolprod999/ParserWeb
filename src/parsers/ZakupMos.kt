@@ -1,10 +1,10 @@
 package parsers
 
 import AddTenderKomos
-import AddVNum
+import addVNum
 import PassDb
 import Prefix
-import TenderKwords
+import tenderKwords
 import UrlConnect
 import UserDb
 import downloadFromUrl
@@ -224,14 +224,14 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                 insertCusRec.close()
             }
             try {
-                TenderKwords(idTender, con)
+                tenderKwords(idTender, con)
             } catch (e: Exception) {
                 logger("Ошибка добавления ключевых слов", e.stackTrace, e)
             }
 
 
             try {
-                AddVNum(con, NumberT, typeFz)
+                addVNum(con, NumberT, typeFz)
             } catch (e: Exception) {
                 logger("Ошибка добавления версий", e.stackTrace, e)
             }

@@ -1,12 +1,11 @@
 import java.sql.*
-import java.text.ParseException
 import java.util.*
 import java.util.Date
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
-fun GetConformity(conf: String): Int {
+fun getConformity(conf: String): Int {
     val s = conf.toLowerCase()
     return when {
         s.contains("открыт") -> 5
@@ -19,7 +18,7 @@ fun GetConformity(conf: String): Int {
 }
 
 @Throws(SQLException::class, ClassNotFoundException::class, IllegalAccessException::class, InstantiationException::class)
-fun AddVNum(con: Connection, id: String, typeFz: Int) {
+fun addVNum(con: Connection, id: String, typeFz: Int) {
     var verNum = 1
     val p1: PreparedStatement = con.prepareStatement("SELECT id_tender FROM ${Prefix}tender WHERE purchase_number = ? AND type_fz = ? ORDER BY UNIX_TIMESTAMP(date_version) ASC")
     p1.setString(1, id)
@@ -30,7 +29,7 @@ fun AddVNum(con: Connection, id: String, typeFz: Int) {
         con.prepareStatement("UPDATE ${Prefix}tender SET num_version = ? WHERE id_tender = ? AND type_fz = ?").apply {
             setInt(1, verNum)
             setInt(2, IdTender)
-            p1.setInt(3, typeFz)
+            setInt(3, typeFz)
             executeUpdate()
             close()
         }
@@ -42,7 +41,7 @@ fun AddVNum(con: Connection, id: String, typeFz: Int) {
 }
 
 @Throws(SQLException::class, ClassNotFoundException::class, IllegalAccessException::class, InstantiationException::class)
-fun TenderKwords(idTender: Int, con: Connection) {
+fun tenderKwords(idTender: Int, con: Connection) {
     val s = StringBuilder()
     val p1: PreparedStatement = con.prepareStatement("SELECT DISTINCT po.name, po.okpd_name FROM ${Prefix}purchase_object AS po LEFT JOIN ${Prefix}lot AS l ON l.id_lot = po.id_lot WHERE l.id_tender = ?")
     p1.setInt(1, idTender)
