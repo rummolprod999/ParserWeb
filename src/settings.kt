@@ -17,9 +17,10 @@ var Server: String? = null
 var Port: Int = 0
 var logPath: String? = null
 val DateNow = Date()
-var AddTender: Int = 0
+var AddTenderKomos: Int = 0
 var UrlConnect: String? = null
 var formatter: Format = SimpleDateFormat("dd.MM.yyyy kk:mm:ss")
+var formatterOnlyDate: Format = SimpleDateFormat("dd.MM.yyyy")
 
 fun GetSettings() = try {
     val filePathSetting = executePath + File.separator + "setting_tenders.xml"

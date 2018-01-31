@@ -16,7 +16,7 @@ fun parserZakupMos() {
         e.printStackTrace()
     }
 
-    logger("Добавили тендеров $AddTender")
+    logger("Добавили тендеров $AddTenderKomos")
     logger("Конец парсинга")
 
 }

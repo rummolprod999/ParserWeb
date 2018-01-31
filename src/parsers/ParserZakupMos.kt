@@ -1,8 +1,7 @@
 package parsers
 
-import DateAddHours
-import GetDate
-import UrlConnect
+import dateAddHours
+import getDate
 import downloadFromUrl
 import logger
 import org.jsoup.Jsoup
@@ -24,6 +23,9 @@ class ParserZakupMos : Iparser {
             logger("Gets o tenders", urlPageAll)
             return
         }
+        else{
+            tenders.reverse()
+        }
         tenders.forEach { el: Element ->
             try {
                 val typeT = el.select("td:eq(0)")?.text()?.trim() ?: ""
@@ -34,13 +36,13 @@ class ParserZakupMos : Iparser {
                 val contactP = el.select("td:eq(2) > span")?.text()?.trim() ?: ""
                 val dateS = el.select("td:eq(4)")?.text()?.trim() ?: ""
                 val dateE = el.select("td:eq(5)")?.text()?.trim() ?: ""
-                var dateStart = GetDate(dateS)
+                var dateStart = getDate(dateS)
                 if (dateStart != Date(0L)) {
-                    dateStart = DateAddHours(dateStart, -1)
+                    dateStart = dateAddHours(dateStart, -1)
                 }
-                var dateEnd = GetDate(dateE)
+                var dateEnd = getDate(dateE)
                 if (dateEnd != Date(0L)) {
-                    dateEnd = DateAddHours(dateEnd, -1)
+                    dateEnd = dateAddHours(dateEnd, -1)
                 }
                 val zm = ZakupMos(url, contactP, numb, purObj, typeT, dateStart, dateEnd)
                 zm.parsing()

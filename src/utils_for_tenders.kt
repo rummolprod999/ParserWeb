@@ -19,16 +19,18 @@ fun GetConformity(conf: String): Int {
 }
 
 @Throws(SQLException::class, ClassNotFoundException::class, IllegalAccessException::class, InstantiationException::class)
-fun AddVNum(con: Connection, id: String) {
+fun AddVNum(con: Connection, id: String, typeFz: Int) {
     var verNum = 1
-    val p1: PreparedStatement = con.prepareStatement("SELECT id_tender FROM ${Prefix}tender WHERE purchase_number = ? ORDER BY UNIX_TIMESTAMP(date_version) ASC")
+    val p1: PreparedStatement = con.prepareStatement("SELECT id_tender FROM ${Prefix}tender WHERE purchase_number = ? AND type_fz = ? ORDER BY UNIX_TIMESTAMP(date_version) ASC")
     p1.setString(1, id)
+    p1.setInt(2, typeFz)
     val r1: ResultSet = p1.executeQuery()
     while (r1.next()) {
         val IdTender = r1.getInt(1)
-        con.prepareStatement("UPDATE ${Prefix}tender SET num_version = ? WHERE id_tender = ? AND type_fz = 4").apply {
+        con.prepareStatement("UPDATE ${Prefix}tender SET num_version = ? WHERE id_tender = ? AND type_fz = ?").apply {
             setInt(1, verNum)
             setInt(2, IdTender)
+            p1.setInt(3, typeFz)
             executeUpdate()
             close()
         }
@@ -139,19 +141,39 @@ fun TenderKwords(idTender: Int, con: Connection) {
 
 }
 
-fun GetDate(dt: String): Date {
+fun getDate(dt: String): Date {
     var d = Date(0L)
     try {
         d = formatter.parseObject(dt) as Date
-    } catch (ignored: ParseException) {
-
+    } catch (e: Exception) {
+        try {
+            d = formatterOnlyDate.parseObject(dt) as Date
+        } catch (e: Exception) {
+        }
     }
 
     return d
 }
-fun DateAddHours(dt: Date, h: Int): Date{
+
+fun dateAddHours(dt: Date, h: Int): Date {
     val cal = Calendar.getInstance()
     cal.time = dt
     cal.add(Calendar.HOUR_OF_DAY, h)
     return cal.time
+}
+
+fun extractNum(s: String): String {
+    var nm = ""
+    try {
+        val pattern: Pattern = Pattern.compile("\\s+")
+        val matcher: Matcher = pattern.matcher(s)
+        val s = matcher.replaceAll("")
+        val p = Pattern.compile("""(\d+\.*\d*)""")
+        val m = p.matcher(s)
+        if (m.find()) {
+            nm = m.group()
+        }
+    } catch (e: Exception) {
+    }
+    return nm
 }
