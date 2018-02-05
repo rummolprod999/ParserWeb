@@ -1,0 +1,58 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Kotlin template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+### Kotlin template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+Будет удалено .idea/dataSources.local.xml
+Будет удалено .idea/dataSources/
+Будет удалено .idea/inspectionProfiles/
+Будет удалено .idea/workspace.xml
+Будет удалено out/artifacts/ParserWeb_jar/setting_tenders.xml
+Будет удалено out/artifacts/ParserWeb_jar/temp_tender_pro/
+Будет удалено out/production/ParserWeb/META-INF/
+Будет удалено out/production/setting_tenders.xml
+Будет удалено out/production/temp_tender_pro/

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-val executePath: String = System.getProperty("user.dir")
+val executePath: String = File(Class.forName("AppKt").protectionDomain.codeSource.location.path).parentFile.toString()
 var Database: String? = null
 var tempDirTenders: String? = null
 var logDirTenders: String? = null
