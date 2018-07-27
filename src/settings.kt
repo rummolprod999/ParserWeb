@@ -18,6 +18,7 @@ var Port: Int = 0
 var logPath: String? = null
 val DateNow = Date()
 var AddTenderKomos: Int = 0
+var UpdateTenderKomos: Int = 0
 var UrlConnect: String? = null
 var formatter: Format = SimpleDateFormat("dd.MM.yyyy kk:mm:ss")
 var formatterOnlyDate: Format = SimpleDateFormat("dd.MM.yyyy")

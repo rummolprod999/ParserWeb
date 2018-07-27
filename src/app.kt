@@ -17,6 +17,7 @@ fun parserZakupMos() {
     }
 
     logger("Добавили тендеров $AddTenderKomos")
+    logger("Обновили тендеров $UpdateTenderKomos")
     logger("Конец парсинга")
 
 }

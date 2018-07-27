@@ -4,6 +4,7 @@ import AddTenderKomos
 import addVNum
 import PassDb
 import Prefix
+import UpdateTenderKomos
 import tenderKwords
 import UrlConnect
 import UserDb
@@ -39,11 +40,13 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
             }
             val html = Jsoup.parse(stPage)
             var cancelstatus = 0
+            var updated = false
             val stmt = con.prepareStatement("SELECT id_tender, date_version FROM ${Prefix}tender WHERE purchase_number = ? AND cancel=0 AND type_fz = ?")
             stmt.setString(1, NumberT)
             stmt.setInt(2, typeFz)
             val rs = stmt.executeQuery()
             while (rs.next()) {
+                updated = true
                 val idT = rs.getInt(1)
                 val dateB = rs.getTimestamp(2)
                 if (DateSt.after(dateB) || dateB == Timestamp(DateSt.time)) {
@@ -138,7 +141,11 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
             }
             rt.close()
             insertTender.close()
-            AddTenderKomos++
+            if (updated) {
+                UpdateTenderKomos++
+            } else {
+                AddTenderKomos++
+            }
             var idLot = 0
             val LotNumber = 1
             val currency = html.selectFirst("p:has(b:containsOwn(Валюта:))")?.ownText()?.trim() ?: ""
@@ -201,9 +208,12 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                 insertPurObj.executeUpdate()
                 insertPurObj.close()
             }
-            val delivDate = html.selectFirst("p:has(b:containsOwn(Срок поставки:))")?.ownText()?.trim { it <= ' ' } ?: ""
-            val delivPay = html.selectFirst("p:has(b:containsOwn(Условия оплаты:))")?.ownText()?.trim { it <= ' ' } ?: ""
-            val delivPlace = html.selectFirst("p:has(b:containsOwn(Условия поставки:))")?.ownText()?.trim { it <= ' ' } ?: ""
+            val delivDate = html.selectFirst("p:has(b:containsOwn(Срок поставки:))")?.ownText()?.trim { it <= ' ' }
+                    ?: ""
+            val delivPay = html.selectFirst("p:has(b:containsOwn(Условия оплаты:))")?.ownText()?.trim { it <= ' ' }
+                    ?: ""
+            val delivPlace = html.selectFirst("p:has(b:containsOwn(Условия поставки:))")?.ownText()?.trim { it <= ' ' }
+                    ?: ""
             var dTerm = ""
             if (delivDate != "") {
                 dTerm = "Срок поставки: ${delivDate}\n"
