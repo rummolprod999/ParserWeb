@@ -187,7 +187,7 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                     stmtins.close()
                 }
             }
-            val purObj: Elements = html.select("table.new-table > tbody > tr")
+            val purObj: Elements = html.select("div.table-responsive > table.table > tbody > tr")
             purObj.forEach { po ->
                 var name = po.select("td:eq(1)")?.text()?.trim() ?: ""
                 val addChar = po.select("td:eq(2) > div")?.text()?.trim() ?: ""
@@ -202,7 +202,7 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                 insertPurObj.setInt(2, idCustomer)
                 insertPurObj.setString(3, name)
                 insertPurObj.setString(4, quantity_value)
-                insertPurObj.setString(5, price)
+                insertPurObj.setString(5, extractNum(price))
                 insertPurObj.setString(6, okei)
                 insertPurObj.setString(7, quantity_value)
                 insertPurObj.executeUpdate()
@@ -221,15 +221,13 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
             if (delivPay != "") {
                 dTerm = "${dTerm}Условия оплаты: ${delivPay}\n"
             }
-            if (delivPlace != "") {
-                dTerm = "${dTerm}Условия поставки: $delivPlace"
-            }
             dTerm = dTerm.trim { it <= ' ' }
             if (dTerm != "") {
-                val insertCusRec = con.prepareStatement("INSERT INTO ${Prefix}customer_requirement SET id_lot = ?, id_customer = ?, delivery_term = ?")
+                val insertCusRec = con.prepareStatement("INSERT INTO ${Prefix}customer_requirement SET id_lot = ?, id_customer = ?, delivery_term = ?, delivery_place = ?")
                 insertCusRec.setInt(1, idLot)
                 insertCusRec.setInt(2, idCustomer)
                 insertCusRec.setString(3, dTerm)
+                insertCusRec.setString(4, delivPlace)
                 insertCusRec.executeUpdate()
                 insertCusRec.close()
             }
