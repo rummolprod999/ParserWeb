@@ -216,10 +216,10 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                     ?: ""
             var dTerm = ""
             if (delivDate != "") {
-                dTerm = "Срок поставки: ${delivDate}\n"
+                dTerm = "Срок поставки: $delivDate\n"
             }
             if (delivPay != "") {
-                dTerm = "${dTerm}Условия оплаты: ${delivPay}\n"
+                dTerm = "${dTerm}Условия оплаты: $delivPay\n"
             }
             dTerm = dTerm.trim { it <= ' ' }
             if (dTerm != "") {
