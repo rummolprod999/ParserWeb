@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element
 import java.util.*
 
 class ParserZakupMos : Iparser {
-    val urlPageAll: String = "http://zakupkikomos.ru/e-order2/index.php?SHOWALL_1=1"
+    val urlPageAll: String = "https://zakupkikomos.ru/e-order2/index.php?SHOWALL_1=1"
     override fun parser() {
         val sPageAll = downloadFromUrl(urlPageAll)
         if (sPageAll == "") {
@@ -20,7 +20,7 @@ class ParserZakupMos : Iparser {
         val html = Jsoup.parse(sPageAll)
         val tenders: Elements = html.select("table.new-table tbody tr")
         if (tenders.count() == 0) {
-            logger("Gets o tenders", urlPageAll)
+            logger("got zero tenders", urlPageAll)
             return
         }
         else{
@@ -32,7 +32,7 @@ class ParserZakupMos : Iparser {
                 val typeT = el.select("td:eq(0)")?.text()?.trim() ?: ""
                 val urlT = el.select("td:eq(1) > p > a[href]")?.attr("href")?.trim() ?: ""
                 if(urlT == ""){
-                    logger("can not find urlT")
+                    logger("cannot find urlT")
                     return@forEach
                 }
                 val url = "http://zakupkikomos.ru/e-order2/$urlT"
