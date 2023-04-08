@@ -187,7 +187,7 @@ data class ZakupMos(val Url: String, val ContactPerson: String, val NumberT: Str
                     stmtins.close()
                 }
             }
-            val purObj: Elements = html.select("div.table-responsive > table.table > tbody > tr")
+            val purObj: Elements = html.select("table.new-table > tbody > tr")
             purObj.forEach { po ->
                 var name = po.select("td:eq(1)")?.text()?.trim() ?: ""
                 val addChar = po.select("td:eq(2) > div")?.text()?.trim() ?: ""

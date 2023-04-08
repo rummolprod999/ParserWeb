@@ -35,7 +35,7 @@ class ParserZakupMos : Iparser {
                     logger("cannot find urlT")
                     return@forEach
                 }
-                val url = "http://zakupkikomos.ru/e-order2/$urlT"
+                val url = "https://zakupkikomos.ru/e-order2/$urlT"
                 val numb = el.select("td:eq(1) > p > b > span")?.text()?.trim()?.trim { it == '№' } ?: ""
                 if(numb == ""){
                     logger("can not find purNum", url)
