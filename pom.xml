@@ -59,7 +59,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>enterit.ApplicationKt</mainClass>
+                                    <mainClass>AppKt</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
